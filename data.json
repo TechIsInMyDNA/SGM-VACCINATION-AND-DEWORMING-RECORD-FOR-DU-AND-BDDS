@@ -1,5 +1,18 @@
 {
   "BDDS": [],
-  "DOG_UNIT": []
+  "DOG_UNIT": [
+    {
+      "id": "dog_1787944188185",
+      "name": "Bruno",
+      "breed": "Ok",
+      "handlers": [
+        {
+          "name": "Djueje",
+          "pin": "2343"
+        }
+      ],
+      "vaccinations": [],
+      "dewormings": []
+    }
+  ]
 }
-
