@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGM DOG VACCINATION & DEWORMING RECORD 🙏</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- SheetJS for Clean Excel Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -19,7 +16,6 @@
 </head>
 <body class="min-h-screen pb-12 flex flex-col items-center">
 
-    <!-- Top Header Banner -->
     <header class="w-full max-w-5xl my-6 px-4">
         <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-200 text-center relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500"></div>
@@ -31,10 +27,9 @@
                 Official Multi-Handler Veterinary Medical Records & Live Cloud Management Portal
             </p>
 
-            <!-- Sync Status Indicator -->
             <div class="mt-4 flex items-center justify-center">
                 <span id="syncStatus" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-100 border border-slate-200 text-slate-700 shadow-sm">
-                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span> Connecting to Cloud...
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span> Connecting to Live Cloud...
                 </span>
             </div>
         </div>
@@ -42,13 +37,11 @@
 
     <main class="w-full max-w-5xl px-4 flex-1">
         
-        <!-- SECTION 1: Department Selection (Light Themed) -->
         <div id="deptSelectScreen" class="bg-white rounded-2xl p-8 mb-6 text-center card-shadow border border-slate-200">
             <h2 class="text-lg font-bold mb-6 text-slate-800 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-building-shield text-blue-600"></i> Select Your Department
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-lg mx-auto">
-                <!-- BDDS Button -->
                 <button onclick="promptDeptAuth('BDDS')" class="group p-6 rounded-2xl border-2 border-slate-100 bg-slate-50/50 hover:bg-blue-50/50 hover:border-blue-500 transition duration-200 flex flex-col items-center">
                     <div class="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mb-3 group-hover:scale-105 transition duration-200">
                         <i class="fa-solid fa-bomb text-2xl text-blue-600"></i>
@@ -57,7 +50,6 @@
                     <span class="text-xs text-slate-500 mt-1">Bomb Detection & Disposal Squad</span>
                 </button>
 
-                <!-- DOG UNIT Button -->
                 <button onclick="promptDeptAuth('DOG_UNIT')" class="group p-6 rounded-2xl border-2 border-slate-100 bg-slate-50/50 hover:bg-emerald-50/50 hover:border-emerald-500 transition duration-200 flex flex-col items-center">
                     <div class="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center mb-3 group-hover:scale-105 transition duration-200">
                         <i class="fa-solid fa-shield-dog text-2xl text-emerald-600"></i>
@@ -68,10 +60,8 @@
             </div>
         </div>
 
-        <!-- SECTION 2: Department Workspace Portal -->
         <div id="deptPortal" class="hidden space-y-6">
             
-            <!-- Active Dept Nav Bar -->
             <div class="bg-white rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 card-shadow border border-slate-200 border-l-4 border-l-blue-600">
                 <div class="flex items-center gap-3">
                     <div id="activeDeptBadge" class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
@@ -92,13 +82,10 @@
                 </div>
             </div>
 
-            <!-- Workspace Columns -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <!-- Left Column: Dog Selection & Add Dog -->
                 <div class="space-y-6">
                     
-                    <!-- Unlock Dog Profile Card -->
                     <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-200">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2">
                             <i class="fa-solid fa-id-badge text-blue-600"></i> Select Dog & Unlock
@@ -112,7 +99,7 @@
                             </div>
                             <div>
                                 <label class="text-[11px] text-slate-600 font-bold block mb-1">Handler Secret PIN</label>
-                                <input type="password" id="handlerInputPin" placeholder="Enter Any Assigned Handler PIN" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800">
+                                <input type="password" id="handlerInputPin" placeholder="Enter Handler Secret PIN" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800">
                             </div>
                             <button onclick="unlockDogProfile()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-2 shadow-sm">
                                 <i class="fa-solid fa-lock-open"></i> Unlock Dog Records
@@ -120,7 +107,6 @@
                         </div>
                     </div>
 
-                    <!-- Register New Dog Form -->
                     <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-200">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2">
                             <i class="fa-solid fa-plus-circle text-emerald-600"></i> Register New Dog
@@ -150,10 +136,8 @@
 
                 </div>
 
-                <!-- Right Column: Medical Logbook & Handlers Management -->
                 <div class="lg:col-span-2 space-y-6">
                     
-                    <!-- Locked Notice Placeholder -->
                     <div id="lockedStateNotice" class="bg-white rounded-2xl p-12 text-center card-shadow border border-slate-200">
                         <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-slate-400">
                             <i class="fa-solid fa-lock text-2xl"></i>
@@ -164,10 +148,8 @@
                         </p>
                     </div>
 
-                    <!-- Unlocked Medical Management Area -->
                     <div id="unlockedWorkspace" class="hidden space-y-6">
                         
-                        <!-- Dog Profile Details & Handlers Management -->
                         <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-200 border-l-4 border-l-emerald-600 space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-4">
                                 <div>
@@ -181,7 +163,6 @@
                                 </button>
                             </div>
 
-                            <!-- Assigned Handlers (Multiple Support) -->
                             <div class="pt-3 border-t border-slate-100">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
@@ -192,14 +173,11 @@
                                     </button>
                                 </div>
                                 <div id="handlersListContainer" class="flex flex-wrap gap-2">
-                                    <!-- Dynamic Handlers Chips -->
-                                </div>
+                                    </div>
                             </div>
                         </div>
 
-                        <!-- Medical Tabs & Forms -->
                         <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-200">
-                            <!-- Switch Tab Buttons -->
                             <div class="flex border-b border-slate-200 pb-3 mb-5 gap-2">
                                 <button id="btnTabVaccine" onclick="switchMedicalTab('vaccine')" class="px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider tab-btn-active transition flex items-center gap-2">
                                     <i class="fa-solid fa-syringe"></i> Vaccination Log
@@ -209,7 +187,6 @@
                                 </button>
                             </div>
 
-                            <!-- Medical Record Input Form -->
                             <form id="recordEntryForm" onsubmit="handleRecordSubmit(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
                                 <div>
                                     <label class="text-[10px] text-slate-600 font-bold uppercase block mb-1">Date Administered</label>
@@ -234,7 +211,6 @@
                                 </div>
                             </form>
 
-                            <!-- Records Table View -->
                             <div class="overflow-x-auto rounded-xl border border-slate-200">
                                 <table class="w-full text-left text-xs text-slate-700">
                                     <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider font-bold border-b border-slate-200">
@@ -248,8 +224,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="recordsTableBody" class="divide-y divide-slate-100 bg-white">
-                                        <!-- Dynamic entries injected here -->
-                                    </tbody>
+                                        </tbody>
                                 </table>
                             </div>
 
@@ -266,7 +241,7 @@
     </main>
 
     <script>
-        // HARDCODED CREDENTIALS (CLEAN RECONSTRUCTED VALUES)
+        // TARGET DETAILS
         const CLOUD_CONFIG = {
             owner: "TechIsInMyDNA",
             repo: "SGM-VACCINATION-AND-DEWORMING-RECORD-FOR-DU-AND-BDDS",
@@ -695,7 +670,7 @@
             XLSX.writeFile(wb, `SGM_${AppState.activeDept}_Medical_Report_${nowStr}.xlsx`);
         }
 
-        // GitHub Live Cloud Sync Engine (Fixed API Target & Auth)
+        // GitHub Live Cloud Sync Engine (Real-Time Auto Creating & Fetching)
         async function checkCloudSync() {
             const token = getDecodedToken();
             const statusEl = document.getElementById('syncStatus');
@@ -722,13 +697,16 @@
                     statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Connected`;
                     if (AppState.activeDept) refreshDogDropdown();
                 } else if (res.status === 404) {
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span> Creating data.json...`;
+                    // Self-healing: Automatically create data.json file in repo on first run!
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Initializing data.json...`;
                     await syncToGitHub();
                 } else {
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Auth Failed (${res.status})`;
+                    const errData = await res.json().catch(() => ({}));
+                    console.error("API Auth Error:", errData);
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Auth Error (${res.status})`;
                 }
             } catch(e) {
-                console.error(e);
+                console.error("Fetch Catch:", e);
                 statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Network Error`;
             }
         }
@@ -765,10 +743,13 @@
                     AppState.fileSha = resData.content.sha;
                     statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Synced`;
                 } else {
+                    const errBody = await res.json().catch(() => ({}));
+                    console.error("Sync Error Response:", errBody);
                     statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Sync Failed (${res.status})`;
                 }
             } catch(e) {
-                statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Network Error`;
+                console.error("Sync Catch:", e);
+                statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Cloud Network Error`;
             }
         }
     </script>
