@@ -13,6 +13,19 @@
       ],
       "vaccinations": [],
       "dewormings": []
+    },
+    {
+      "id": "dog_1787944209423",
+      "name": "Bruno1",
+      "breed": "Shhs",
+      "handlers": [
+        {
+          "name": "Shsh",
+          "pin": "1234"
+        }
+      ],
+      "vaccinations": [],
+      "dewormings": []
     }
   ]
 }
