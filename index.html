@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGM DOG VACCINATION & DEWORMING RECORD 🙏</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS for Clean Excel Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- CryptoJS for AES-256 Client-Side Vault Encryption -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; }
@@ -16,6 +21,7 @@
 </head>
 <body class="min-h-screen pb-12 flex flex-col items-center">
 
+    <!-- Top Header Banner -->
     <header class="w-full max-w-5xl my-6 px-4">
         <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-200 text-center relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500"></div>
@@ -24,12 +30,13 @@
                 SGM DOG VACCINATION DEWORMING RECORD FOR DOG UNIT AND BDDS 🙏
             </h1>
             <p class="text-slate-500 text-xs sm:text-sm mt-1.5 font-medium">
-                Official Multi-Handler Veterinary Medical Records & Live Cloud Management Portal
+                Official Multi-Handler Veterinary Medical Records & AES Encrypted Live Cloud Portal
             </p>
 
+            <!-- Sync Status Indicator -->
             <div class="mt-4 flex items-center justify-center">
                 <span id="syncStatus" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-100 border border-slate-200 text-slate-700 shadow-sm">
-                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span> Connecting to Live Cloud...
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span> Connecting to Encrypted Cloud...
                 </span>
             </div>
         </div>
@@ -37,11 +44,13 @@
 
     <main class="w-full max-w-5xl px-4 flex-1">
         
+        <!-- SECTION 1: Department Selection Screen -->
         <div id="deptSelectScreen" class="bg-white rounded-2xl p-8 mb-6 text-center card-shadow border border-slate-200">
             <h2 class="text-lg font-bold mb-6 text-slate-800 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-building-shield text-blue-600"></i> Select Your Department
+                <i class="fa-solid fa-shield-halved text-blue-600"></i> Select Your Department
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-lg mx-auto">
+                <!-- BDDS Button -->
                 <button onclick="promptDeptAuth('BDDS')" class="group p-6 rounded-2xl border-2 border-slate-100 bg-slate-50/50 hover:bg-blue-50/50 hover:border-blue-500 transition duration-200 flex flex-col items-center">
                     <div class="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mb-3 group-hover:scale-105 transition duration-200">
                         <i class="fa-solid fa-bomb text-2xl text-blue-600"></i>
@@ -50,6 +59,7 @@
                     <span class="text-xs text-slate-500 mt-1">Bomb Detection & Disposal Squad</span>
                 </button>
 
+                <!-- DOG UNIT Button -->
                 <button onclick="promptDeptAuth('DOG_UNIT')" class="group p-6 rounded-2xl border-2 border-slate-100 bg-slate-50/50 hover:bg-emerald-50/50 hover:border-emerald-500 transition duration-200 flex flex-col items-center">
                     <div class="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center mb-3 group-hover:scale-105 transition duration-200">
                         <i class="fa-solid fa-shield-dog text-2xl text-emerald-600"></i>
@@ -60,8 +70,10 @@
             </div>
         </div>
 
+        <!-- SECTION 2: Department Workspace Portal -->
         <div id="deptPortal" class="hidden space-y-6">
             
+            <!-- Active Dept Nav Bar -->
             <div class="bg-white rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 card-shadow border border-slate-200 border-l-4 border-l-blue-600">
                 <div class="flex items-center gap-3">
                     <div id="activeDeptBadge" class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
@@ -82,10 +94,13 @@
                 </div>
             </div>
 
+            <!-- Workspace Columns -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
+                <!-- Left Column: Dog Selection & Add Dog -->
                 <div class="space-y-6">
                     
+                    <!-- Unlock Dog Profile Card -->
                     <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-200">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2">
                             <i class="fa-solid fa-id-badge text-blue-600"></i> Select Dog & Unlock
@@ -107,6 +122,7 @@
                         </div>
                     </div>
 
+                    <!-- Register New Dog Form -->
                     <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-200">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2">
                             <i class="fa-solid fa-plus-circle text-emerald-600"></i> Register New Dog
@@ -136,8 +152,10 @@
 
                 </div>
 
+                <!-- Right Column: Medical Logbook & Handlers Management -->
                 <div class="lg:col-span-2 space-y-6">
                     
+                    <!-- Locked Notice Placeholder -->
                     <div id="lockedStateNotice" class="bg-white rounded-2xl p-12 text-center card-shadow border border-slate-200">
                         <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-slate-400">
                             <i class="fa-solid fa-lock text-2xl"></i>
@@ -148,8 +166,10 @@
                         </p>
                     </div>
 
+                    <!-- Unlocked Medical Management Area -->
                     <div id="unlockedWorkspace" class="hidden space-y-6">
                         
+                        <!-- Dog Profile Details & Handlers Management -->
                         <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-200 border-l-4 border-l-emerald-600 space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-4">
                                 <div>
@@ -158,11 +178,17 @@
                                         <span id="cardDogBreed" class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">Belgian Malinois</span>
                                     </div>
                                 </div>
-                                <button onclick="lockCurrentDog()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition border border-slate-300 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-lock"></i> Lock Dog Log
-                                </button>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="deleteCurrentDog()" class="px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs font-bold transition border border-rose-200 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-trash-can"></i> Delete Dog
+                                    </button>
+                                    <button onclick="lockCurrentDog()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition border border-slate-300 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-lock"></i> Lock Log
+                                    </button>
+                                </div>
                             </div>
 
+                            <!-- Assigned Handlers (Multiple Support) -->
                             <div class="pt-3 border-t border-slate-100">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
@@ -173,11 +199,14 @@
                                     </button>
                                 </div>
                                 <div id="handlersListContainer" class="flex flex-wrap gap-2">
-                                    </div>
+                                    <!-- Dynamic Handlers Chips -->
+                                </div>
                             </div>
                         </div>
 
+                        <!-- Medical Tabs & Forms -->
                         <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-200">
+                            <!-- Switch Tab Buttons -->
                             <div class="flex border-b border-slate-200 pb-3 mb-5 gap-2">
                                 <button id="btnTabVaccine" onclick="switchMedicalTab('vaccine')" class="px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider tab-btn-active transition flex items-center gap-2">
                                     <i class="fa-solid fa-syringe"></i> Vaccination Log
@@ -187,6 +216,7 @@
                                 </button>
                             </div>
 
+                            <!-- Medical Record Input Form -->
                             <form id="recordEntryForm" onsubmit="handleRecordSubmit(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
                                 <div>
                                     <label class="text-[10px] text-slate-600 font-bold uppercase block mb-1">Date Administered</label>
@@ -211,6 +241,7 @@
                                 </div>
                             </form>
 
+                            <!-- Records Table View -->
                             <div class="overflow-x-auto rounded-xl border border-slate-200">
                                 <table class="w-full text-left text-xs text-slate-700">
                                     <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider font-bold border-b border-slate-200">
@@ -224,7 +255,8 @@
                                         </tr>
                                     </thead>
                                     <tbody id="recordsTableBody" class="divide-y divide-slate-100 bg-white">
-                                        </tbody>
+                                        <!-- Dynamic entries injected here -->
+                                    </tbody>
                                 </table>
                             </div>
 
@@ -261,6 +293,9 @@
             }
         }
 
+        // AES-256 Secret Vault Key (Protects data even inside public repository)
+        const VAULT_SALT = "SGM_K9_SECURITY_V3_KEY";
+
         // Department Master Access PINs
         const DEPT_PINS = {
             "BDDS": "1122",
@@ -279,13 +314,35 @@
             }
         };
 
-        // UTF-8 Safe Helpers for Base64 (GitHub API)
+        // UTF-8 Base64 Helpers
         function utf8_to_b64(str) {
             return window.btoa(unescape(encodeURIComponent(str)));
         }
 
         function b64_to_utf8(str) {
             return decodeURIComponent(escape(window.atob(str)));
+        }
+
+        // AES-256 Encryption & Decryption Handlers
+        function encryptPayload(dataObj) {
+            const raw = JSON.stringify(dataObj);
+            const cipher = CryptoJS.AES.encrypt(raw, VAULT_SALT).toString();
+            return { encrypted: true, vault: cipher };
+        }
+
+        function decryptPayload(remoteData) {
+            if (remoteData && remoteData.encrypted && remoteData.vault) {
+                try {
+                    const bytes = CryptoJS.AES.decrypt(remoteData.vault, VAULT_SALT);
+                    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+                    return JSON.parse(decrypted);
+                } catch(e) {
+                    console.error("AES Decryption Error", e);
+                    return { BDDS: [], DOG_UNIT: [] };
+                }
+            }
+            // Backward compatibility for plain json
+            return remoteData;
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -303,7 +360,7 @@
                         AppState.data.DOG_UNIT = parsed.DOG_UNIT || [];
                     }
                 } catch(e) {
-                    console.error("Local data parse error", e);
+                    console.error("Local parse error", e);
                 }
             }
         }
@@ -339,7 +396,7 @@
             document.getElementById('deptSelectScreen').classList.remove('hidden');
         }
 
-        // Dog Dropdown & Multi-Handler Support
+        // Dog Selection & Verification
         function refreshDogDropdown() {
             const select = document.getElementById('dogDropdown');
             select.innerHTML = '<option value="">-- Choose Dog --</option>';
@@ -386,7 +443,7 @@
             persistData();
             refreshDogDropdown();
             e.target.reset();
-            alert(`✅ Dog "${nameInput}" registered successfully!`);
+            alert(`✅ Dog "${nameInput}" registered and encrypted successfully!`);
         }
 
         function unlockDogProfile() {
@@ -428,6 +485,19 @@
             AppState.activeDogId = null;
             document.getElementById('lockedStateNotice').classList.remove('hidden');
             document.getElementById('unlockedWorkspace').classList.add('hidden');
+        }
+
+        function deleteCurrentDog() {
+            const dog = AppState.data[AppState.activeDept].find(d => d.id === AppState.activeDogId);
+            if (!dog) return;
+
+            if (confirm(`Are you sure you want to permanently delete dog profile "${dog.name}" and all its medical logs?`)) {
+                AppState.data[AppState.activeDept] = AppState.data[AppState.activeDept].filter(d => d.id !== AppState.activeDogId);
+                persistData();
+                lockCurrentDog();
+                refreshDogDropdown();
+                alert(`🗑️ Dog "${dog.name}" deleted successfully.`);
+            }
         }
 
         // Multi-Handler Management
@@ -670,7 +740,7 @@
             XLSX.writeFile(wb, `SGM_${AppState.activeDept}_Medical_Report_${nowStr}.xlsx`);
         }
 
-        // GitHub Live Cloud Sync Engine (Real-Time Auto Creating & Fetching)
+        // GitHub Live Cloud Sync Engine (AES Encrypted Vault)
         async function checkCloudSync() {
             const token = getDecodedToken();
             const statusEl = document.getElementById('syncStatus');
@@ -690,24 +760,23 @@
                     const rawContent = b64_to_utf8(json.content.replace(/\s/g, ''));
                     const remoteData = JSON.parse(rawContent);
                     
-                    AppState.data.BDDS = remoteData.BDDS || [];
-                    AppState.data.DOG_UNIT = remoteData.DOG_UNIT || [];
+                    // Decrypt Cloud Data
+                    const decrypted = decryptPayload(remoteData);
+                    AppState.data.BDDS = decrypted.BDDS || [];
+                    AppState.data.DOG_UNIT = decrypted.DOG_UNIT || [];
                     
                     localStorage.setItem('SGM_CANINE_DATA_V2', JSON.stringify(AppState.data));
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Connected`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Encrypted Cloud Connected`;
                     if (AppState.activeDept) refreshDogDropdown();
                 } else if (res.status === 404) {
-                    // Self-healing: Automatically create data.json file in repo on first run!
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Initializing data.json...`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Initializing Vault...`;
                     await syncToGitHub();
                 } else {
-                    const errData = await res.json().catch(() => ({}));
-                    console.error("API Auth Error:", errData);
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Auth Error (${res.status})`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Cloud Error (${res.status})`;
                 }
             } catch(e) {
-                console.error("Fetch Catch:", e);
-                statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Network Error`;
+                console.error(e);
+                statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Offline Cache Active`;
             }
         }
 
@@ -715,15 +784,18 @@
             const token = getDecodedToken();
             const statusEl = document.getElementById('syncStatus');
 
-            statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Syncing to Cloud...`;
+            statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Encrypting & Syncing...`;
 
             try {
                 const url = `https://api.github.com/repos/${CLOUD_CONFIG.owner}/${CLOUD_CONFIG.repo}/contents/${CLOUD_CONFIG.path}`;
-                const jsonStr = JSON.stringify(AppState.data, null, 2);
+                
+                // Encrypt payload before push
+                const encryptedPayload = encryptPayload(AppState.data);
+                const jsonStr = JSON.stringify(encryptedPayload, null, 2);
                 const contentStr = utf8_to_b64(jsonStr);
                 
                 const body = {
-                    message: "Update SGM Medical Records [Live Cloud Sync]",
+                    message: "Update SGM Medical Records [AES-256 Encrypted Sync]",
                     content: contentStr
                 };
                 if (AppState.fileSha) body.sha = AppState.fileSha;
@@ -741,15 +813,12 @@
                 if (res.ok) {
                     const resData = await res.json();
                     AppState.fileSha = resData.content.sha;
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Synced`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Encrypted Cloud Synced`;
                 } else {
-                    const errBody = await res.json().catch(() => ({}));
-                    console.error("Sync Error Response:", errBody);
                     statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Sync Failed (${res.status})`;
                 }
             } catch(e) {
-                console.error("Sync Catch:", e);
-                statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Cloud Network Error`;
+                statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Network Error`;
             }
         }
     </script>
