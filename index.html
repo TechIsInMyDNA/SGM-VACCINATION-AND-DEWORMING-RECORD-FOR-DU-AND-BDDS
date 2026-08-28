@@ -24,12 +24,12 @@
                 SGM DOG VACCINATION DEWORMING RECORD FOR DOG UNIT AND BDDS 🙏
             </h1>
             <p class="text-slate-500 text-xs sm:text-sm mt-1.5 font-medium">
-                Official Multi-Handler Veterinary Medical Records & Cloud Management Portal
+                Official Multi-Handler Veterinary Medical Records & Live Cloud Management Portal
             </p>
 
             <div class="mt-4 flex items-center justify-center">
                 <span id="syncStatus" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-100 border border-slate-200 text-slate-700 shadow-sm">
-                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span> Connecting to Cloud...
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span> Connecting to data.json...
                 </span>
             </div>
         </div>
@@ -249,7 +249,7 @@
         const CLOUD_CONFIG = {
             owner: atob("VGVjaElzSW5NeUROQQ=="),
             repo: atob("U0dNLVZB block Q0NJTkFUSU9OLUFORC1ERFdPUk1JTkctUkVDT1JELUZPUi1EVS1BTkQtQkREUw==".replace(" block ", "")),
-            path: "records.json"
+            path: "data.json"
         };
 
         function getDecodedToken() {
@@ -278,6 +278,15 @@
             }
         };
 
+        // UTF-8 Safe Helpers for Base64 (GitHub API)
+        function utf8_to_b64(str) {
+            return window.btoa(unescape(encodeURIComponent(str)));
+        }
+
+        function b64_to_utf8(str) {
+            return decodeURIComponent(escape(window.atob(str)));
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             loadLocalData();
             checkCloudSync();
@@ -287,7 +296,11 @@
             const saved = localStorage.getItem('SGM_CANINE_DATA_V2');
             if (saved) {
                 try {
-                    AppState.data = JSON.parse(saved);
+                    const parsed = JSON.parse(saved);
+                    if (parsed && typeof parsed === 'object') {
+                        AppState.data.BDDS = parsed.BDDS || [];
+                        AppState.data.DOG_UNIT = parsed.DOG_UNIT || [];
+                    }
                 } catch(e) {
                     console.error("Local data parse error", e);
                 }
@@ -332,7 +345,6 @@
             
             const dogs = AppState.data[AppState.activeDept] || [];
             dogs.forEach(d => {
-                // Ensure handlers structure is backward compatible
                 if (!d.handlers) {
                     d.handlers = [{ name: d.handler || "Primary Handler", pin: d.pin || "0000" }];
                 }
@@ -389,12 +401,10 @@
             const dog = AppState.data[AppState.activeDept].find(d => d.id === dogId);
             if (!dog) return;
 
-            // Ensure handlers structure
             if (!dog.handlers) {
                 dog.handlers = [{ name: dog.handler || "Primary Handler", pin: dog.pin || "0000" }];
             }
 
-            // Check if input PIN matches any assigned handler's PIN
             const isAuthorized = dog.handlers.some(h => h.pin === inputPin);
 
             if (isAuthorized) {
@@ -663,7 +673,7 @@
             XLSX.writeFile(wb, `SGM_${AppState.activeDept}_Medical_Report_${nowStr}.xlsx`);
         }
 
-        // GitHub Live Cloud Sync Engine
+        // GitHub Live Cloud Sync Engine (Targeting data.json)
         async function checkCloudSync() {
             const token = getDecodedToken();
             const statusEl = document.getElementById('syncStatus');
@@ -677,17 +687,23 @@
                 if (res.ok) {
                     const json = await res.json();
                     AppState.fileSha = json.sha;
-                    const remoteData = JSON.parse(decodeURIComponent(escape(atob(json.content))));
-                    AppState.data = remoteData;
-                    localStorage.setItem('SGM_CANINE_DATA_V2', JSON.stringify(remoteData));
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Connected`;
+                    const rawContent = b64_to_utf8(json.content.replace(/\s/g, ''));
+                    const remoteData = JSON.parse(rawContent);
+                    
+                    AppState.data.BDDS = remoteData.BDDS || [];
+                    AppState.data.DOG_UNIT = remoteData.DOG_UNIT || [];
+                    
+                    localStorage.setItem('SGM_CANINE_DATA_V2', JSON.stringify(AppState.data));
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Connected (data.json)`;
                     if (AppState.activeDept) refreshDogDropdown();
                 } else if (res.status === 404) {
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Cloud Ready (New Database)`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> data.json Not Found (Creating...)`;
+                    persistData();
                 } else {
                     statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Cloud Connecting...`;
                 }
             } catch(e) {
+                console.error(e);
                 statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Offline / Local Cache`;
             }
         }
@@ -696,14 +712,15 @@
             const token = getDecodedToken();
             const statusEl = document.getElementById('syncStatus');
 
-            statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Syncing to Cloud...`;
+            statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Syncing to data.json...`;
 
             try {
                 const url = `https://api.github.com/repos/${CLOUD_CONFIG.owner}/${CLOUD_CONFIG.repo}/contents/${CLOUD_CONFIG.path}`;
-                const contentStr = btoa(unescape(encodeURIComponent(JSON.stringify(AppState.data, null, 2))));
+                const jsonStr = JSON.stringify(AppState.data, null, 2);
+                const contentStr = utf8_to_b64(jsonStr);
                 
                 const body = {
-                    message: "Update SGM Medical Records [Live Sync]",
+                    message: "Update SGM Medical Records [Live data.json Sync]",
                     content: contentStr
                 };
                 if (AppState.fileSha) body.sha = AppState.fileSha;
@@ -720,9 +737,9 @@
                 if (res.ok) {
                     const resData = await res.json();
                     AppState.fileSha = resData.content.sha;
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Synced`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Synced (data.json)`;
                 } else {
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Sync Failed`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Sync Failed (${res.status})`;
                 }
             } catch(e) {
                 statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Cloud Network Error`;
