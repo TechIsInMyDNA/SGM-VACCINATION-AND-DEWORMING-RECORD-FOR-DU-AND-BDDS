@@ -4,40 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGM DOG VACCINATION & DEWORMING RECORD 🙏</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- SheetJS for Instant Excel Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0b1120; color: #f8fafc; }
-        .glass-panel { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .tab-active { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); color: white !important; }
-        input, select { transition: all 0.2s ease-in-out; }
-        input:focus, select:focus { outline: none; border-color: #3b82f6 !important; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; }
+        .card-shadow { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02); }
+        .tab-btn-active { background-color: #2563eb !important; color: #ffffff !important; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
     </style>
 </head>
 <body class="min-h-screen pb-12 flex flex-col items-center">
 
-    <!-- Header Banner -->
     <header class="w-full max-w-5xl my-6 px-4">
-        <div class="glass-panel rounded-2xl p-6 shadow-2xl border-t-2 border-blue-500/40 text-center relative overflow-hidden">
-            <div class="absolute -top-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-200 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500"></div>
             
-            <h1 class="text-xl sm:text-2xl md:text-3xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-300 to-emerald-400 bg-clip-text text-transparent leading-snug">
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 leading-snug">
                 SGM DOG VACCINATION DEWORMING RECORD FOR DOG UNIT AND BDDS 🙏
             </h1>
-            <p class="text-slate-400 text-xs sm:text-sm mt-2 font-medium">
-                Live Cloud Sync • Department & Handler Isolation System
+            <p class="text-slate-500 text-xs sm:text-sm mt-1.5 font-medium">
+                Official Multi-Handler Veterinary Medical Records & Cloud Management Portal
             </p>
 
-            <!-- Cloud Sync Status Indicator -->
-            <div class="mt-4 flex items-center justify-center gap-3">
-                <span id="syncStatus" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-900/80 border border-slate-700 text-slate-300 shadow-inner">
-                    <span class="w-2 h-2 rounded-full bg-blue-400 animate-spin"></span> Connecting to Private Cloud...
+            <div class="mt-4 flex items-center justify-center">
+                <span id="syncStatus" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-100 border border-slate-200 text-slate-700 shadow-sm">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span> Connecting to Cloud...
                 </span>
             </div>
         </div>
@@ -45,109 +37,98 @@
 
     <main class="w-full max-w-5xl px-4 flex-1">
         
-        <!-- SECTION 1: Department Selection Screen -->
-        <div id="deptSelectScreen" class="glass-panel rounded-2xl p-8 mb-6 text-center shadow-xl">
-            <h2 class="text-lg font-bold mb-6 text-slate-200 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-building-shield text-blue-400"></i> Select Your Department
+        <div id="deptSelectScreen" class="bg-white rounded-2xl p-8 mb-6 text-center card-shadow border border-slate-200">
+            <h2 class="text-lg font-bold mb-6 text-slate-800 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-building-shield text-blue-600"></i> Select Your Department
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-lg mx-auto">
-                <!-- BDDS Button -->
-                <button onclick="promptDeptAuth('BDDS')" class="group p-6 rounded-2xl border border-blue-500/20 bg-slate-800/40 hover:bg-blue-600/10 hover:border-blue-500 transition duration-300 flex flex-col items-center shadow-md">
-                    <div class="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-3 group-hover:scale-110 transition duration-300">
-                        <i class="fa-solid fa-bomb text-2xl text-blue-400"></i>
+                <button onclick="promptDeptAuth('BDDS')" class="group p-6 rounded-2xl border-2 border-slate-100 bg-slate-50/50 hover:bg-blue-50/50 hover:border-blue-500 transition duration-200 flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mb-3 group-hover:scale-105 transition duration-200">
+                        <i class="fa-solid fa-bomb text-2xl text-blue-600"></i>
                     </div>
-                    <span class="font-extrabold text-lg text-white tracking-wide">BDDS UNIT</span>
-                    <span class="text-xs text-slate-400 mt-1">Bomb Detection & Disposal Squad</span>
-                    <span class="mt-3 text-[10px] text-blue-400/80 font-mono font-medium">Default PIN: 1122</span>
+                    <span class="font-extrabold text-lg text-slate-800">BDDS UNIT</span>
+                    <span class="text-xs text-slate-500 mt-1">Bomb Detection & Disposal Squad</span>
                 </button>
 
-                <!-- DOG UNIT Button -->
-                <button onclick="promptDeptAuth('DOG_UNIT')" class="group p-6 rounded-2xl border border-emerald-500/20 bg-slate-800/40 hover:bg-emerald-600/10 hover:border-emerald-500 transition duration-300 flex flex-col items-center shadow-md">
-                    <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-3 group-hover:scale-110 transition duration-300">
-                        <i class="fa-solid fa-shield-dog text-2xl text-emerald-400"></i>
+                <button onclick="promptDeptAuth('DOG_UNIT')" class="group p-6 rounded-2xl border-2 border-slate-100 bg-slate-50/50 hover:bg-emerald-50/50 hover:border-emerald-500 transition duration-200 flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center mb-3 group-hover:scale-105 transition duration-200">
+                        <i class="fa-solid fa-shield-dog text-2xl text-emerald-600"></i>
                     </div>
-                    <span class="font-extrabold text-lg text-white tracking-wide">DOG UNIT</span>
-                    <span class="text-xs text-slate-400 mt-1">Canine Security Department</span>
-                    <span class="mt-3 text-[10px] text-emerald-400/80 font-mono font-medium">Default PIN: 3344</span>
+                    <span class="font-extrabold text-lg text-slate-800">DOG UNIT</span>
+                    <span class="text-xs text-slate-500 mt-1">Canine Security Department</span>
                 </button>
             </div>
         </div>
 
-        <!-- SECTION 2: Department Workspace Portal (PIN Protected) -->
         <div id="deptPortal" class="hidden space-y-6">
             
-            <!-- Department Header Bar -->
-            <div class="glass-panel rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 border-l-4 border-blue-500">
+            <div class="bg-white rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 card-shadow border border-slate-200 border-l-4 border-l-blue-600">
                 <div class="flex items-center gap-3">
-                    <div id="activeDeptBadge" class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                        <i id="activeDeptIcon" class="fa-solid fa-shield-dog text-blue-400"></i>
+                    <div id="activeDeptBadge" class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                        <i id="activeDeptIcon" class="fa-solid fa-shield-dog text-xl"></i>
                     </div>
                     <div>
-                        <span class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Active Workspace</span>
-                        <h3 id="activeDeptTitle" class="text-lg font-black text-white leading-none mt-0.5">DOG UNIT</h3>
+                        <span class="text-[11px] font-bold text-blue-600 uppercase tracking-wider">Active Workspace</span>
+                        <h3 id="activeDeptTitle" class="text-lg font-black text-slate-800 leading-none mt-0.5">DOG UNIT</h3>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="exportToExcel()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow transition">
-                        <i class="fa-solid fa-file-excel"></i> Export Excel
+                    <button onclick="exportToExcel()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm transition">
+                        <i class="fa-solid fa-file-excel"></i> Export Department Excel
                     </button>
-                    <button onclick="logoutDept()" class="px-3.5 py-2 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition border border-rose-500/30">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Switch Dept
+                    <button onclick="logoutDept()" class="px-4 py-2 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-lg text-xs font-bold flex items-center gap-2 transition border border-slate-200">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Switch Unit
                     </button>
                 </div>
             </div>
 
-            <!-- Workspace Columns -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <!-- Left Column: Dog Dropdown & Add Dog Form -->
                 <div class="space-y-6">
                     
-                    <!-- Dog Selector & Handler Unlock -->
-                    <div class="glass-panel rounded-2xl p-5 shadow-lg">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-id-badge text-blue-400"></i> Select Dog & Access
+                    <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-200">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-id-badge text-blue-600"></i> Select Dog & Unlock
                         </h4>
                         <div class="space-y-3">
                             <div>
-                                <label class="text-[11px] text-slate-400 font-semibold">Select Registered Dog</label>
-                                <select id="dogDropdown" class="w-full mt-1 bg-slate-900/90 border border-slate-700 rounded-lg p-2.5 text-xs text-white">
+                                <label class="text-[11px] text-slate-600 font-bold block mb-1">Select Registered Dog</label>
+                                <select id="dogDropdown" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 font-medium">
                                     <option value="">-- Choose Dog --</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-[11px] text-slate-400 font-semibold">Handler Secret PIN</label>
-                                <input type="password" id="handlerInputPin" placeholder="Enter Handler 4-Digit PIN" class="w-full mt-1 bg-slate-900/90 border border-slate-700 rounded-lg p-2.5 text-xs text-white">
+                                <label class="text-[11px] text-slate-600 font-bold block mb-1">Handler Secret PIN</label>
+                                <input type="password" id="handlerInputPin" placeholder="Enter Any Assigned Handler PIN" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800">
                             </div>
-                            <button onclick="unlockDogProfile()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-2 shadow">
+                            <button onclick="unlockDogProfile()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-2 shadow-sm">
                                 <i class="fa-solid fa-lock-open"></i> Unlock Dog Records
                             </button>
                         </div>
                     </div>
 
-                    <!-- Register New Dog Form -->
-                    <div class="glass-panel rounded-2xl p-5 shadow-lg">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-plus-circle text-emerald-400"></i> Register New Dog
+                    <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-200">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-plus-circle text-emerald-600"></i> Register New Dog
                         </h4>
                         <form id="newDogForm" onsubmit="handleNewDogSubmit(event)" class="space-y-3">
                             <div>
-                                <label class="text-[11px] text-slate-400 font-semibold">Dog Name (Unique)</label>
-                                <input type="text" id="newDogName" required placeholder="e.g. Bruno, Max" class="w-full mt-1 bg-slate-900/90 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                <label class="text-[11px] text-slate-600 font-bold block mb-1">Dog Name (Unique)</label>
+                                <input type="text" id="newDogName" required placeholder="e.g. Bruno, Max" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-800">
                             </div>
                             <div>
-                                <label class="text-[11px] text-slate-400 font-semibold">Breed & Specialty</label>
-                                <input type="text" id="newDogBreed" required placeholder="e.g. Belgian Malinois (Tracker)" class="w-full mt-1 bg-slate-900/90 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                <label class="text-[11px] text-slate-600 font-bold block mb-1">Breed & Speciality</label>
+                                <input type="text" id="newDogBreed" required placeholder="e.g. Belgian Malinois (Tracker)" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-800">
                             </div>
                             <div>
-                                <label class="text-[11px] text-slate-400 font-semibold">Handler Name</label>
-                                <input type="text" id="newHandlerName" required placeholder="e.g. Off. R. Sharma" class="w-full mt-1 bg-slate-900/90 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                <label class="text-[11px] text-slate-600 font-bold block mb-1">Primary Handler Name</label>
+                                <input type="text" id="newHandlerName" required placeholder="e.g. Off. R. Sharma" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-800">
                             </div>
                             <div>
-                                <label class="text-[11px] text-slate-400 font-semibold">Set Handler PIN (Protected Access)</label>
-                                <input type="password" id="newHandlerPin" required maxlength="6" placeholder="Set 4-digit PIN" class="w-full mt-1 bg-slate-900/90 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                <label class="text-[11px] text-slate-600 font-bold block mb-1">Handler Security PIN</label>
+                                <input type="password" id="newHandlerPin" required maxlength="6" placeholder="Set 4-6 digit PIN" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-800">
                             </div>
-                            <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-2 shadow">
+                            <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-2 shadow-sm">
                                 <i class="fa-solid fa-floppy-disk"></i> Register Dog
                             </button>
                         </form>
@@ -155,76 +136,84 @@
 
                 </div>
 
-                <!-- Right Column: Medical Logbook -->
                 <div class="lg:col-span-2 space-y-6">
                     
-                    <!-- Locked Placeholder -->
-                    <div id="lockedStateNotice" class="glass-panel rounded-2xl p-12 text-center shadow-lg border border-slate-800">
-                        <i class="fa-solid fa-lock text-4xl text-slate-600 mb-3"></i>
-                        <h4 class="text-base font-bold text-slate-300">Handler Profile Locked</h4>
+                    <div id="lockedStateNotice" class="bg-white rounded-2xl p-12 text-center card-shadow border border-slate-200">
+                        <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-slate-400">
+                            <i class="fa-solid fa-lock text-2xl"></i>
+                        </div>
+                        <h4 class="text-base font-bold text-slate-800">Profile Access Locked</h4>
                         <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                            Dropdown se dog select karein aur handler PIN enter karein to view/edit vaccination and deworming details.
+                            Dropdown se dog select karein aur handler PIN enter karke medical history access karein.
                         </p>
                     </div>
 
-                    <!-- Unlocked Medical Management Area -->
                     <div id="unlockedWorkspace" class="hidden space-y-6">
                         
-                        <!-- Dog Profile Card -->
-                        <div class="glass-panel rounded-2xl p-5 border-l-4 border-emerald-500 flex flex-wrap items-center justify-between gap-4 shadow-lg">
-                            <div>
-                                <h3 id="cardDogName" class="text-2xl font-black text-white uppercase tracking-wide">BRUNO</h3>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span id="cardDogBreed" class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-blue-900/40 text-blue-300 border border-blue-700/50">Belgian Malinois</span>
-                                    <span class="text-xs text-slate-400">Handler: <strong id="cardHandlerName" class="text-slate-200">R. Sharma</strong></span>
+                        <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-200 border-l-4 border-l-emerald-600 space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-4">
+                                <div>
+                                    <h3 id="cardDogName" class="text-2xl font-black text-slate-900 uppercase tracking-wide">BRUNO</h3>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span id="cardDogBreed" class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">Belgian Malinois</span>
+                                    </div>
                                 </div>
+                                <button onclick="lockCurrentDog()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition border border-slate-300 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lock"></i> Lock Dog Log
+                                </button>
                             </div>
-                            <button onclick="lockCurrentDog()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold transition border border-slate-700 flex items-center gap-1.5">
-                                <i class="fa-solid fa-lock"></i> Lock Dog Log
-                            </button>
+
+                            <div class="pt-3 border-t border-slate-100">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                                        <i class="fa-solid fa-users text-blue-600"></i> Assigned Handlers
+                                    </span>
+                                    <button onclick="promptAddHandler()" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded text-[11px] font-bold transition flex items-center gap-1">
+                                        <i class="fa-solid fa-user-plus"></i> Add Handler
+                                    </button>
+                                </div>
+                                <div id="handlersListContainer" class="flex flex-wrap gap-2">
+                                    </div>
+                            </div>
                         </div>
 
-                        <!-- Records Table & Form Container -->
-                        <div class="glass-panel rounded-2xl p-6 shadow-xl">
-                            <!-- Switch Tab Buttons -->
-                            <div class="flex border-b border-slate-700/80 pb-3 mb-5 gap-2">
-                                <button id="btnTabVaccine" onclick="switchMedicalTab('vaccine')" class="px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider tab-active transition flex items-center gap-2">
+                        <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-200">
+                            <div class="flex border-b border-slate-200 pb-3 mb-5 gap-2">
+                                <button id="btnTabVaccine" onclick="switchMedicalTab('vaccine')" class="px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider tab-btn-active transition flex items-center gap-2">
                                     <i class="fa-solid fa-syringe"></i> Vaccination Log
                                 </button>
-                                <button id="btnTabDeworm" onclick="switchMedicalTab('deworm')" class="px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-slate-800 text-slate-400 hover:text-white transition flex items-center gap-2">
+                                <button id="btnTabDeworm" onclick="switchMedicalTab('deworm')" class="px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
                                     <i class="fa-solid fa-pills"></i> Deworming Log
                                 </button>
                             </div>
 
-                            <!-- Record Insertion Form -->
-                            <form id="recordEntryForm" onsubmit="handleRecordSubmit(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                            <form id="recordEntryForm" onsubmit="handleRecordSubmit(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
                                 <div>
-                                    <label class="text-[10px] text-slate-400 font-bold uppercase block mb-1">Date Administered</label>
-                                    <input type="date" id="recordDate" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                    <label class="text-[10px] text-slate-600 font-bold uppercase block mb-1">Date Administered</label>
+                                    <input type="date" id="recordDate" required class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-800">
                                 </div>
                                 <div>
-                                    <label id="lblMedicineName" class="text-[10px] text-slate-400 font-bold uppercase block mb-1">Vaccine Name</label>
-                                    <input type="text" id="recordMedicineName" required placeholder="e.g. Anti-Rabies / DHPPiL" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                    <label id="lblMedicineName" class="text-[10px] text-slate-600 font-bold uppercase block mb-1">Vaccine Name</label>
+                                    <input type="text" id="recordMedicineName" required placeholder="e.g. Anti-Rabies / DHPPiL" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-800">
                                 </div>
                                 <div>
-                                    <label class="text-[10px] text-slate-400 font-bold uppercase block mb-1">Dose / Batch No.</label>
-                                    <input type="text" id="recordDose" placeholder="e.g. 1 ml / Batch #502" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                    <label class="text-[10px] text-slate-600 font-bold uppercase block mb-1">Dose / Batch No.</label>
+                                    <input type="text" id="recordDose" placeholder="e.g. 1 ml / Batch #502" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-800">
                                 </div>
                                 <div>
-                                    <label class="text-[10px] text-slate-400 font-bold uppercase block mb-1">Next Due Date</label>
+                                    <label class="text-[10px] text-slate-600 font-bold uppercase block mb-1">Next Due Date</label>
                                     <div class="flex gap-1.5">
-                                        <input type="date" id="recordDueDate" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                                        <button type="submit" class="px-3.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition shadow">
+                                        <input type="date" id="recordDueDate" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-800">
+                                        <button type="submit" class="px-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-sm">
                                             <i class="fa-solid fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </form>
 
-                            <!-- Records Table View -->
-                            <div class="overflow-x-auto rounded-xl border border-slate-800">
-                                <table class="w-full text-left text-xs text-slate-300">
-                                    <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider font-semibold border-b border-slate-800">
+                            <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                <table class="w-full text-left text-xs text-slate-700">
+                                    <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider font-bold border-b border-slate-200">
                                         <tr>
                                             <th class="p-3">Date Given</th>
                                             <th class="p-3">Category</th>
@@ -234,9 +223,8 @@
                                             <th class="p-3 text-right">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="recordsTableBody" class="divide-y divide-slate-800/60 bg-slate-900/30">
-                                        <!-- Dynamic entries injected here -->
-                                    </tbody>
+                                    <tbody id="recordsTableBody" class="divide-y divide-slate-100 bg-white">
+                                        </tbody>
                                 </table>
                             </div>
 
@@ -254,10 +242,6 @@
 
     <script>
         // HARDCODED & SECURELY OBFUSCATED CREDENTIALS (ANTI-SCANNER PROTECTION)
-        const _C_OWNER = "VGVjaElzSW5NeUROQQ=="; // TechIsInMyDNA
-        const _C_REPO  = "U0dNLVZB block Q0NJTkFUSU9OLUFORC1ERFdPUk1JTkctUkVDT1JELUZPUi1EVS1BTkQtQkREUw=="; 
-        
-        // Exact 3-Part Token Assembly
         const _P_T1 = "Z2hwX0wxZEFLa0RZRzhq";
         const _P_T2 = "STV5RGp0NW1qNXhuVQ==";
         const _P_T3 = "V1E5cHdmM0xucGpv";
@@ -282,7 +266,7 @@
             "DOG_UNIT": "3344"
         };
 
-        // Master Application State
+        // Master App State
         let AppState = {
             activeDept: null,
             activeDogId: null,
@@ -300,7 +284,7 @@
         });
 
         function loadLocalData() {
-            const saved = localStorage.getItem('SGM_LOCAL_STORE');
+            const saved = localStorage.getItem('SGM_CANINE_DATA_V2');
             if (saved) {
                 try {
                     AppState.data = JSON.parse(saved);
@@ -311,7 +295,7 @@
         }
 
         function persistData() {
-            localStorage.setItem('SGM_LOCAL_STORE', JSON.stringify(AppState.data));
+            localStorage.setItem('SGM_CANINE_DATA_V2', JSON.stringify(AppState.data));
             syncToGitHub();
         }
 
@@ -324,8 +308,8 @@
                 document.getElementById('deptPortal').classList.remove('hidden');
                 
                 document.getElementById('activeDeptTitle').innerText = deptKey === 'BDDS' ? 'BDDS UNIT' : 'DOG UNIT';
-                document.getElementById('activeDeptIcon').className = deptKey === 'BDDS' ? 'fa-solid fa-bomb text-blue-400' : 'fa-solid fa-shield-dog text-emerald-400';
-                document.getElementById('activeDeptBadge').className = deptKey === 'BDDS' ? 'w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center' : 'w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center';
+                document.getElementById('activeDeptIcon').className = deptKey === 'BDDS' ? 'fa-solid fa-bomb text-xl' : 'fa-solid fa-shield-dog text-xl';
+                document.getElementById('activeDeptBadge').className = deptKey === 'BDDS' ? 'w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600' : 'w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600';
                 
                 refreshDogDropdown();
                 lockCurrentDog();
@@ -341,16 +325,21 @@
             document.getElementById('deptSelectScreen').classList.remove('hidden');
         }
 
-        // Dog Dropdown & Duplicate Prevention
+        // Dog Dropdown & Data Normalize (Handlers Array Support)
         function refreshDogDropdown() {
             const select = document.getElementById('dogDropdown');
             select.innerHTML = '<option value="">-- Choose Dog --</option>';
             
             const dogs = AppState.data[AppState.activeDept] || [];
             dogs.forEach(d => {
+                // Ensure handlers structure is backward compatible
+                if (!d.handlers) {
+                    d.handlers = [{ name: d.handler || "Primary Handler", pin: d.pin || "0000" }];
+                }
+                const handlerNames = d.handlers.map(h => h.name).join(', ');
                 const opt = document.createElement('option');
                 opt.value = d.id;
-                opt.textContent = `${d.name} (${d.breed}) - Handler: ${d.handler}`;
+                opt.textContent = `${d.name} (${d.breed}) — [${handlerNames}]`;
                 select.appendChild(opt);
             });
         }
@@ -367,7 +356,7 @@
             // Check Duplicate Dog Name
             const isDuplicate = deptDogs.some(d => d.name.toLowerCase() === nameInput.toLowerCase());
             if (isDuplicate) {
-                alert(`⚠️ Dog with name "${nameInput}" is already registered in ${AppState.activeDept}! Duplicate entry is restricted.`);
+                alert(`⚠️ Dog with name "${nameInput}" is already registered in ${AppState.activeDept}!`);
                 return;
             }
 
@@ -375,8 +364,7 @@
                 id: 'dog_' + Date.now(),
                 name: nameInput,
                 breed: breed,
-                handler: handler,
-                pin: pin,
+                handlers: [{ name: handler, pin: pin }],
                 vaccinations: [],
                 dewormings: []
             };
@@ -401,7 +389,15 @@
             const dog = AppState.data[AppState.activeDept].find(d => d.id === dogId);
             if (!dog) return;
 
-            if (dog.pin === inputPin) {
+            // Ensure handlers structure
+            if (!dog.handlers) {
+                dog.handlers = [{ name: dog.handler || "Primary Handler", pin: dog.pin || "0000" }];
+            }
+
+            // Check if input PIN matches any assigned handler's PIN
+            const isAuthorized = dog.handlers.some(h => h.pin === inputPin);
+
+            if (isAuthorized) {
                 AppState.activeDogId = dogId;
                 document.getElementById('handlerInputPin').value = '';
                 
@@ -410,8 +406,8 @@
                 
                 document.getElementById('cardDogName').innerText = dog.name.toUpperCase();
                 document.getElementById('cardDogBreed').innerText = dog.breed;
-                document.getElementById('cardHandlerName').innerText = dog.handler;
                 
+                renderHandlersChips();
                 renderMedicalRecords();
             } else {
                 alert('❌ Incorrect Handler PIN! Access Denied.');
@@ -424,6 +420,66 @@
             document.getElementById('unlockedWorkspace').classList.add('hidden');
         }
 
+        // Multi-Handler Management
+        function renderHandlersChips() {
+            const container = document.getElementById('handlersListContainer');
+            container.innerHTML = '';
+
+            const dog = AppState.data[AppState.activeDept].find(d => d.id === AppState.activeDogId);
+            if (!dog || !dog.handlers) return;
+
+            dog.handlers.forEach((h, index) => {
+                const chip = document.createElement('div');
+                chip.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 border border-slate-300 text-xs font-medium text-slate-800';
+                chip.innerHTML = `
+                    <i class="fa-solid fa-user-shield text-blue-600"></i>
+                    <span>${h.name}</span>
+                    ${dog.handlers.length > 1 ? `
+                        <button onclick="deleteHandler(${index})" title="Remove Handler" class="ml-1 text-slate-400 hover:text-rose-600 transition">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    ` : ''}
+                `;
+                container.appendChild(chip);
+            });
+        }
+
+        function promptAddHandler() {
+            const dog = AppState.data[AppState.activeDept].find(d => d.id === AppState.activeDogId);
+            if (!dog) return;
+
+            const name = prompt("Enter Additional Handler Name (e.g. Off. S. Verma):");
+            if (!name || !name.trim()) return;
+
+            const pin = prompt(`Set Security PIN for ${name.trim()} (4-6 Digits):`);
+            if (!pin || !pin.trim()) {
+                alert("Handler PIN is required!");
+                return;
+            }
+
+            dog.handlers.push({ name: name.trim(), pin: pin.trim() });
+            persistData();
+            renderHandlersChips();
+            refreshDogDropdown();
+            alert(`✅ Handler ${name.trim()} assigned to ${dog.name}!`);
+        }
+
+        function deleteHandler(index) {
+            const dog = AppState.data[AppState.activeDept].find(d => d.id === AppState.activeDogId);
+            if (!dog || dog.handlers.length <= 1) {
+                alert("A dog must have at least one assigned handler.");
+                return;
+            }
+
+            const targetHandler = dog.handlers[index];
+            if (confirm(`Remove handler "${targetHandler.name}" from ${dog.name}?`)) {
+                dog.handlers.splice(index, 1);
+                persistData();
+                renderHandlersChips();
+                refreshDogDropdown();
+            }
+        }
+
         // Tab Switching
         function switchMedicalTab(tab) {
             AppState.activeTab = tab;
@@ -433,13 +489,13 @@
             const inputMed = document.getElementById('recordMedicineName');
 
             if (tab === 'vaccine') {
-                btnVaccine.className = 'px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider tab-active transition flex items-center gap-2';
-                btnDeworm.className = 'px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-slate-800 text-slate-400 hover:text-white transition flex items-center gap-2';
+                btnVaccine.className = 'px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider tab-btn-active transition flex items-center gap-2';
+                btnDeworm.className = 'px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center gap-2';
                 lblMed.innerText = 'Vaccine Name';
                 inputMed.placeholder = 'e.g. Anti-Rabies / DHPPiL';
             } else {
-                btnDeworm.className = 'px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider tab-active transition flex items-center gap-2';
-                btnVaccine.className = 'px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-slate-800 text-slate-400 hover:text-white transition flex items-center gap-2';
+                btnDeworm.className = 'px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider tab-btn-active transition flex items-center gap-2';
+                btnVaccine.className = 'px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center gap-2';
                 lblMed.innerText = 'Dewormer Medicine Name';
                 inputMed.placeholder = 'e.g. Drontal Plus / Prazisam';
             }
@@ -504,25 +560,25 @@
             const records = AppState.activeTab === 'vaccine' ? dog.vaccinations : dog.dewormings;
 
             if (records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No ${AppState.activeTab} records logged yet.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-5 text-center text-slate-400">No ${AppState.activeTab} entries recorded yet.</td></tr>`;
                 return;
             }
 
             records.forEach(r => {
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-800/40 transition';
+                tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
                 tr.innerHTML = `
-                    <td class="p-3 font-semibold text-slate-200">${r.date}</td>
+                    <td class="p-3 font-semibold text-slate-800">${r.date}</td>
                     <td class="p-3">
-                        <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold ${AppState.activeTab === 'vaccine' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}">
+                        <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold ${AppState.activeTab === 'vaccine' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
                             ${AppState.activeTab}
                         </span>
                     </td>
-                    <td class="p-3 font-medium text-white">${r.medicine}</td>
-                    <td class="p-3 text-slate-400 font-mono text-[11px]">${r.dose || '-'}</td>
-                    <td class="p-3 font-semibold ${r.dueDate !== '-' ? 'text-amber-400' : 'text-slate-500'}">${r.dueDate}</td>
+                    <td class="p-3 font-bold text-slate-800">${r.medicine}</td>
+                    <td class="p-3 text-slate-600 font-mono text-[11px]">${r.dose || '-'}</td>
+                    <td class="p-3 font-semibold ${r.dueDate !== '-' ? 'text-amber-600 font-bold' : 'text-slate-400'}">${r.dueDate}</td>
                     <td class="p-3 text-right">
-                        <button onclick="deleteRecord('${r.id}')" class="text-rose-400 hover:text-rose-300 transition px-2 py-1">
+                        <button onclick="deleteRecord('${r.id}')" class="text-rose-500 hover:text-rose-700 transition px-2 py-1">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </td>
@@ -531,7 +587,7 @@
             });
         }
 
-        // Export to Excel
+        // Clean & Formatted Excel Export
         function exportToExcel() {
             const dogs = AppState.data[AppState.activeDept] || [];
             if (dogs.length === 0) {
@@ -540,44 +596,71 @@
             }
 
             const exportRows = [];
+            let serialNo = 1;
+
             dogs.forEach(dog => {
+                const handlerList = (dog.handlers || [{ name: dog.handler || "N/A" }]).map(h => h.name).join(', ');
+
+                // Vaccinations
                 dog.vaccinations.forEach(v => {
                     exportRows.push({
-                        Department: AppState.activeDept,
-                        Dog_Name: dog.name,
-                        Breed: dog.breed,
-                        Handler: dog.handler,
-                        Type: 'Vaccination',
-                        Date_Given: v.date,
-                        Medicine_Vaccine_Name: v.medicine,
-                        Dose_Batch: v.dose,
-                        Next_Due_Date: v.dueDate
+                        "S.No": serialNo++,
+                        "Department": AppState.activeDept === "BDDS" ? "BDDS Unit" : "Dog Unit",
+                        "Dog Name": dog.name.toUpperCase(),
+                        "Breed / Specialty": dog.breed,
+                        "Assigned Handlers": handlerList,
+                        "Record Type": "Vaccination",
+                        "Date Administered": v.date,
+                        "Medicine / Vaccine Name": v.medicine,
+                        "Dose / Batch No.": v.dose || "-",
+                        "Next Due Date": v.dueDate || "-"
                     });
                 });
+
+                // Dewormings
                 dog.dewormings.forEach(d => {
                     exportRows.push({
-                        Department: AppState.activeDept,
-                        Dog_Name: dog.name,
-                        Breed: dog.breed,
-                        Handler: dog.handler,
-                        Type: 'Deworming',
-                        Date_Given: d.date,
-                        Medicine_Vaccine_Name: d.medicine,
-                        Dose_Batch: d.dose,
-                        Next_Due_Date: d.dueDate
+                        "S.No": serialNo++,
+                        "Department": AppState.activeDept === "BDDS" ? "BDDS Unit" : "Dog Unit",
+                        "Dog Name": dog.name.toUpperCase(),
+                        "Breed / Specialty": dog.breed,
+                        "Assigned Handlers": handlerList,
+                        "Record Type": "Deworming",
+                        "Date Administered": d.date,
+                        "Medicine / Vaccine Name": d.medicine,
+                        "Dose / Batch No.": d.dose || "-",
+                        "Next Due Date": d.dueDate || "-"
                     });
                 });
             });
 
             if (exportRows.length === 0) {
-                alert('No medical entries logged yet to export.');
+                alert('No vaccination or deworming logs entered yet for export.');
                 return;
             }
 
             const ws = XLSX.utils.json_to_sheet(exportRows);
+
+            // Auto Column Width Calculation
+            const colWidths = [
+                { wch: 6 },  // S.No
+                { wch: 14 }, // Dept
+                { wch: 18 }, // Dog Name
+                { wch: 25 }, // Breed
+                { wch: 30 }, // Handlers
+                { wch: 14 }, // Record Type
+                { wch: 18 }, // Date Given
+                { wch: 28 }, // Medicine
+                { wch: 18 }, // Dose
+                { wch: 16 }  // Due Date
+            ];
+            ws['!cols'] = colWidths;
+
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, `${AppState.activeDept}_Records`);
-            XLSX.writeFile(wb, `SGM_${AppState.activeDept}_Medical_Records.xlsx`);
+            
+            const nowStr = new Date().toISOString().slice(0, 10);
+            XLSX.writeFile(wb, `SGM_${AppState.activeDept}_Medical_Report_${nowStr}.xlsx`);
         }
 
         // GitHub Live Cloud Sync Engine
@@ -596,16 +679,16 @@
                     AppState.fileSha = json.sha;
                     const remoteData = JSON.parse(decodeURIComponent(escape(atob(json.content))));
                     AppState.data = remoteData;
-                    localStorage.setItem('SGM_LOCAL_STORE', JSON.stringify(remoteData));
-                    statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Live Cloud Connected`;
+                    localStorage.setItem('SGM_CANINE_DATA_V2', JSON.stringify(remoteData));
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Connected`;
                     if (AppState.activeDept) refreshDogDropdown();
                 } else if (res.status === 404) {
-                    statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Cloud Ready (New Database)`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Cloud Ready (New Database)`;
                 } else {
-                    statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Repo Initializing...`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Cloud Connecting...`;
                 }
             } catch(e) {
-                statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500"></span> Offline / Local Mode`;
+                statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Offline / Local Cache`;
             }
         }
 
@@ -613,14 +696,14 @@
             const token = getDecodedToken();
             const statusEl = document.getElementById('syncStatus');
 
-            statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-400 animate-spin"></span> Syncing to Cloud...`;
+            statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Syncing to Cloud...`;
 
             try {
                 const url = `https://api.github.com/repos/${CLOUD_CONFIG.owner}/${CLOUD_CONFIG.repo}/contents/${CLOUD_CONFIG.path}`;
                 const contentStr = btoa(unescape(encodeURIComponent(JSON.stringify(AppState.data, null, 2))));
                 
                 const body = {
-                    message: "Update SGM Medical Record Database [Live Sync]",
+                    message: "Update SGM Medical Records [Live Sync]",
                     content: contentStr
                 };
                 if (AppState.fileSha) body.sha = AppState.fileSha;
@@ -637,12 +720,12 @@
                 if (res.ok) {
                     const resData = await res.json();
                     AppState.fileSha = resData.content.sha;
-                    statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Live Cloud Synced`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Cloud Synced`;
                 } else {
-                    statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500"></span> Sync Failed`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Sync Failed`;
                 }
             } catch(e) {
-                statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500"></span> Cloud Network Error`;
+                statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Cloud Network Error`;
             }
         }
     </script>
