@@ -273,11 +273,13 @@
     </main>
 
     <script>
-        // TARGET DETAILS
+        // TARGET DETAILS WITH SEPARATE STORAGE BRANCH
         const CLOUD_CONFIG = {
-            owner: "TechIsInMyDNA",
-            repo: "SGM-VACCINATION-AND-DEWORMING-RECORD-FOR-DU-AND-BDDS",
-            path: "data.json"
+            owner: "TechIsInMyDNA",[cite: 1, 2]
+            repo: "SGM-VACCINATION-AND-DEWORMING-RECORD-FOR-DU-AND-BDDS",[cite: 1, 2]
+            path: "data.json",
+            baseBranch: "main",
+            dataBranch: "data-storage" // Dedicated data branch to prevent GitHub Pages re-build on every sync
         };
 
         // Anti-Scanner Split Token Assembly
@@ -293,7 +295,7 @@
             }
         }
 
-        // AES-256 Secret Vault Key (Protects data even inside public repository)
+        // AES-256 Secret Vault Key
         const VAULT_SALT = "SGM_K9_SECURITY_V3_KEY";
 
         // Department Master Access PINs
@@ -341,7 +343,6 @@
                     return { BDDS: [], DOG_UNIT: [] };
                 }
             }
-            // Backward compatibility for plain json
             return remoteData;
         }
 
@@ -740,13 +741,63 @@
             XLSX.writeFile(wb, `SGM_${AppState.activeDept}_Medical_Report_${nowStr}.xlsx`);
         }
 
-        // GitHub Live Cloud Sync Engine (AES Encrypted Vault)
+        // Branch Manager: Auto-creates separate storage branch from baseBranch on first run
+        async function ensureStorageBranchExists(token) {
+            const branchUrl = `https://api.github.com/repos/${CLOUD_CONFIG.owner}/${CLOUD_CONFIG.repo}/branches/${CLOUD_CONFIG.dataBranch}`;
+            const checkRes = await fetch(branchUrl, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (checkRes.ok) return true;
+
+            // If storage branch does not exist (404), fetch latest SHA from baseBranch (main)
+            const baseRefUrl = `https://api.github.com/repos/${CLOUD_CONFIG.owner}/${CLOUD_CONFIG.repo}/git/ref/heads/${CLOUD_CONFIG.baseBranch}`;
+            const baseRefRes = await fetch(baseRefUrl, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (!baseRefRes.ok) return false;
+
+            const baseRefData = await baseRefRes.json();
+            const sourceSha = baseRefData.object.sha;
+
+            // Create new branch 'data-storage' pointing to source SHA
+            const createRefUrl = `https://api.github.com/repos/${CLOUD_CONFIG.owner}/${CLOUD_CONFIG.repo}/git/refs`;
+            const createRefRes = await fetch(createRefUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github.v3+json'
+                },
+                body: JSON.stringify({
+                    ref: `refs/heads/${CLOUD_CONFIG.dataBranch}`,
+                    sha: sourceSha
+                })
+            });
+
+            return createRefRes.ok;
+        }
+
+        // GitHub Live Cloud Sync Engine (Synced exclusively to dedicated data branch)
         async function checkCloudSync() {
             const token = getDecodedToken();
             const statusEl = document.getElementById('syncStatus');
 
             try {
-                const url = `https://api.github.com/repos/${CLOUD_CONFIG.owner}/${CLOUD_CONFIG.repo}/contents/${CLOUD_CONFIG.path}`;
+                // Ensure the isolated storage branch exists first
+                const branchReady = await ensureStorageBranchExists(token);
+                if (!branchReady) {
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Branch Setup Pending...`;
+                }
+
+                const url = `https://api.github.com/repos/${CLOUD_CONFIG.owner}/${CLOUD_CONFIG.repo}/contents/${CLOUD_CONFIG.path}?ref=${CLOUD_CONFIG.dataBranch}`;
                 const res = await fetch(url, {
                     headers: {
                         'Authorization': `token ${token}`,
@@ -760,7 +811,6 @@
                     const rawContent = b64_to_utf8(json.content.replace(/\s/g, ''));
                     const remoteData = JSON.parse(rawContent);
                     
-                    // Decrypt Cloud Data
                     const decrypted = decryptPayload(remoteData);
                     AppState.data.BDDS = decrypted.BDDS || [];
                     AppState.data.DOG_UNIT = decrypted.DOG_UNIT || [];
@@ -769,7 +819,7 @@
                     statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Encrypted Cloud Connected`;
                     if (AppState.activeDept) refreshDogDropdown();
                 } else if (res.status === 404) {
-                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Initializing Vault...`;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Initializing Storage Branch Vault...`;
                     await syncToGitHub();
                 } else {
                     statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Cloud Error (${res.status})`;
@@ -787,16 +837,18 @@
             statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-spin"></span> Encrypting & Syncing...`;
 
             try {
+                await ensureStorageBranchExists(token);
+
                 const url = `https://api.github.com/repos/${CLOUD_CONFIG.owner}/${CLOUD_CONFIG.repo}/contents/${CLOUD_CONFIG.path}`;
                 
-                // Encrypt payload before push
                 const encryptedPayload = encryptPayload(AppState.data);
                 const jsonStr = JSON.stringify(encryptedPayload, null, 2);
                 const contentStr = utf8_to_b64(jsonStr);
                 
                 const body = {
-                    message: "Update SGM Medical Records [AES-256 Encrypted Sync]",
-                    content: contentStr
+                    message: "Update SGM Medical Records [AES-256 Storage Branch Sync]",
+                    content: contentStr,
+                    branch: CLOUD_CONFIG.dataBranch // Explicit target to isolated branch
                 };
                 if (AppState.fileSha) body.sha = AppState.fileSha;
 
